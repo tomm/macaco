@@ -59,7 +59,7 @@ const backend_config = {
   stats,
   mode: 'development',
   target: 'node',
-  entry: { server: [ "./src/backend/main.ts" ], cli: [ "./src/backend/cli.ts" ] },
+  entry: { server: [ "./src/backend/main.ts" ], cli: [ "./src/backend/macaco_cli.ts" ] },
   output: { filename: "[name].js", path: __dirname + "/dist" },
   externals: [nodeExternals()],
   devtool: "source-map",

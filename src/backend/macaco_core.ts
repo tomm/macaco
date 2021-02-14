@@ -1,11 +1,28 @@
+import postgres from "postgres";
 import * as Safe from "safe-portals";
-import * as routes from "../common/routes";
 import { FastifyInstance, FastifyRequest } from 'fastify';
-import { User, UserSerializer } from "../common/types";
+import { User, UserSerializer, Route } from "../common/macaco_common";
+
+/* Database access */
+
+if (!process.env['DATABASE_URL']) {
+  console.error("Error: Missing DATABASE_URL environment variable");
+  process.exit(-1);
+}
+
+export const sql = postgres(
+  process.env['DATABASE_URL'],
+  {
+    max: process.env['DATABASE_POOL_SIZE'] ? parseInt(process.env['DATABASE_POOL_SIZE']) : 10,
+    debug: (con, query, params) => console.log(query, params),
+  }
+);
+
+/* Type-safe, validated route handling */
 
 export type RouteHandler<IN, OUT> = (args: IN, user: User | undefined, req: FastifyRequest) => Promise<OUT>;
 
-export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: routes.Route<IN, OUT>, handler: RouteHandler<IN, OUT>) {
+export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, OUT>, handler: RouteHandler<IN, OUT>) {
   fastify.post(route.path, async (req, reply) => {
     const user = Safe.optional(UserSerializer).read(req.session.get('loggedInUser'));
     try {

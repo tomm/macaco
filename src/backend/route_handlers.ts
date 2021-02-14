@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import * as UserCmd from "./commands/user";
+import * as UserCmd from "./commands/macaco_user";
 import * as routes from "../common/routes";
 import { handleRoute } from "./macaco_core";
 

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import * as routes from "../common/routes";
-import { User } from "../common/types";
+import { User } from "../common/macaco_common";
 
 function Root(props: { initialRoot: string }) {
   switch (props.initialRoot) {

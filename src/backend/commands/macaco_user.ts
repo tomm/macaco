@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { User, UserSerializer } from "../../common/types";
-import { sql } from "../sql";
+import { User, UserSerializer } from "../../common/macaco_common";
+import { sql } from "../macaco_core";
 
 const ROUNDS = 10;
 

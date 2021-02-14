@@ -1,7 +1,7 @@
 const migrate = require('tiny-postgres-migrator');
 const postgres = require('postgres');
 import crypto from "crypto";
-import { createUser } from "./commands/user";
+import { createUser } from "./commands/macaco_user";
 
 const args = process.argv.slice(2);
 
