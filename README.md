@@ -4,8 +4,15 @@ Web app template using React, Fastify, Postgres, and a statically-validated clie
 
 ## How to use
 
-Clone macaco as the start of your project. Search around for the string
-'macaco' and change to your project name.
+Clone macaco as the start of your project. If you plan to keep your project in
+sync with macaco then avoid changing the source files prefixed with macaco_
+(eg. macaco_core.ts), as they are 'framework' code.
+
+## How to install dependencies
+
+```
+npm i
+```
 
 ## How to build and run (development)
 

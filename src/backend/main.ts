@@ -5,4 +5,4 @@ process.on("unhandledRejection", (error: any) => {
   console.log("Unhandled promise rejection: " + error?.stack);
 });
 
-startCluster(() => Fastify({ logger: true }));
+startCluster(() => Fastify({ logger: false }));

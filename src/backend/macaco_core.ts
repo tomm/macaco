@@ -26,7 +26,14 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
   fastify.post(route.path, async (req, reply) => {
     const user = Safe.optional(UserSerializer).read(req.session.get('loggedInUser'));
     try {
-      const _in = route.inputType.read(req.body);
+      const posted_csfr = (req.body as any).csfr_token;
+      if (!(posted_csfr && posted_csfr === req.cookies['macaco.csfr'])) {
+        console.error(`Error: request to ${route.path} has invalid CSFR token`);
+        reply.status(403).send('CSFR token mismatch');
+        return;
+      }
+
+      const _in = route.inputType.read((req.body as any).args);
       return route.outputType.write(await handler(_in, user, req));
     } catch (e) {
       if (e instanceof Safe.ValidationError) {

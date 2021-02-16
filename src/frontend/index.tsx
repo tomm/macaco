@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
 import * as routes from "../common/routes";
 import { User } from "../common/macaco_common";
 
@@ -55,11 +54,6 @@ function DemoPage(props: {}) {
     routes.getLoggedInUser.call({}).then(setUser);
   }, []);
 
-  function onClick() {
-    setCount(count + 1);
-    axios.get('/test').then(r => console.debug(r.data));
-  }
-
   function onClickLogout() {
     routes.logout.call({}).then(() => {
       window.location.reload();
@@ -73,7 +67,7 @@ function DemoPage(props: {}) {
         : <div>Click <a href="/?q=#login">here</a> to log in</div>
     }
     You have clicked {count} times.
-    <button onClick={() => onClick()}>Click me</button>
+    <button onClick={() => setCount(count + 1)}>Click me</button>
   </>
 }
 
