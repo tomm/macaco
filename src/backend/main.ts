@@ -5,4 +5,8 @@ process.on("unhandledRejection", (error: any) => {
   console.log("Unhandled promise rejection: " + error?.stack);
 });
 
-startCluster(() => Fastify({ logger: false }));
+export const appFactory = () => Fastify({ logger: false });
+
+if (require.main === module) {
+  startCluster(appFactory);
+}

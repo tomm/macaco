@@ -4,17 +4,18 @@ import { FastifyInstance, FastifyRequest } from 'fastify';
 import { User, UserSerializer, Route } from "../common/macaco_common";
 
 /* Database access */
+const dbEnvVar = process.env['NODE_ENV'] == 'test' ? 'TEST_DATABASE_URL' : 'DATABASE_URL';
 
-if (!process.env['DATABASE_URL']) {
-  console.error("Error: Missing DATABASE_URL environment variable");
+if (!process.env[dbEnvVar]) {
+  console.error(`Error: Missing ${dbEnvVar} environment variable`);
   process.exit(-1);
 }
 
 export const sql = postgres(
-  process.env['DATABASE_URL'],
+  process.env[dbEnvVar] as string,
   {
     max: process.env['DATABASE_POOL_SIZE'] ? parseInt(process.env['DATABASE_POOL_SIZE']) : 10,
-    debug: (con, query, params) => console.log(query, params),
+    //debug: (con, query, params) => console.log(query, params),
   }
 );
 
@@ -26,20 +27,20 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
   fastify.post(route.path, async (req, reply) => {
     const user = Safe.optional(UserSerializer).read(req.session.get('loggedInUser'));
     try {
-      const posted_csfr = (req.body as any).csfr_token;
+      const posted_csfr = (req.body as any)?.csfr_token;
       if (!(posted_csfr && posted_csfr === req.cookies['macaco.csfr'])) {
-        console.error(`Error: request to ${route.path} has invalid CSFR token`);
+        //console.error(`Error: request to ${route.path} has invalid CSFR token`);
         reply.status(403).send('CSFR token mismatch');
         return;
       }
-
       const _in = route.inputType.read((req.body as any).args);
-      return route.outputType.write(await handler(_in, user, req));
+      return { result: route.outputType.write(await handler(_in, user, req)) };
     } catch (e) {
       if (e instanceof Safe.ValidationError) {
-        reply.status(400).send('Invalid request');
+        return reply.status(400).send('Invalid request');
       } else {
         reply.status(500).send('Server error');
+        console.log(e.stack);
         throw e;
       }
     }

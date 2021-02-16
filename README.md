@@ -42,6 +42,12 @@ To see the available DB migration commands:
 npm run cli migrate
 ```
 
+To migrate the test DB:
+
+```
+NODE_ENV=test npm run cli migrate
+```
+
 ## How to build and run (production)
 
 ```

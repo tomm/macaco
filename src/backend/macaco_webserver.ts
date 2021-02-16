@@ -8,7 +8,7 @@ import { setupRoutes } from "./route_handlers";
 import { error } from "../common/macaco_common";
 import { v4 as uuidv4 } from "uuid";
 
-export async function startWebserver(fastifyFactory: () => FastifyInstance) {
+export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance {
   const fastify = fastifyFactory();
 
   fastify.register(fastifySecureSession, {
@@ -30,6 +30,12 @@ export async function startWebserver(fastifyFactory: () => FastifyInstance) {
     prefix: '/'
   })
 
+  return fastify;
+}
+
+export async function startWebserver(fastifyFactory: () => FastifyInstance) {
+  const fastify = await setupApp(fastifyFactory);
+
   fastify.listen(
     process.env['PORT'] || 3000
   ).catch(err => {
@@ -44,7 +50,7 @@ export async function startCluster(fastifyFactory: () => FastifyInstance) {
   if (numProcesses == 1 || !cluster.isMaster) {
     startWebserver(fastifyFactory);
   } else {
-    console.log(`Starting ${numProcesses} webserver processes`);
+    console.log(`${new Date().toISOString()} | Starting ${numProcesses} webserver processes`);
     for (let i = 0; i < numProcesses; i++) {
       cluster.fork();
     }

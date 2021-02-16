@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { User, UserSerializer } from "../../common/macaco_common";
 import { sql } from "../macaco_core";
+import { v4 as uuidv4} from "uuid";
 
 const ROUNDS = 10;
 
@@ -14,8 +15,9 @@ async function checkHash(plain: string, hash: string): Promise<boolean> {
 
 /** Returns guid */
 export async function createUser(args: { email: string, password: string }): Promise<User> {
+  const guid = uuidv4();
   const [user] = await sql`insert into users (guid, email, secret)
-  values (uuid_generate_v4(), ${args.email}, ${await hashPassword(args.password)})
+  values (${guid}, ${args.email}, ${await hashPassword(args.password)})
   returning *
   `;
 

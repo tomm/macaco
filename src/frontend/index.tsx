@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as routes from "../common/routes";
 import { User } from "../common/macaco_common";
+import "./style.css";
 
 function Root(props: { initialRoot: string }) {
   switch (props.initialRoot) {

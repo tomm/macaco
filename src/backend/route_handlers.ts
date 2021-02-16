@@ -29,7 +29,6 @@ export function setupRoutes(fastify: FastifyInstance) {
   handleRoute(fastify, routes.getLoggedInUser, async (args, user) => user);
 
   handleRoute(fastify, routes.ping, async (args, user, req) => {
-    console.log(`User ${JSON.stringify(user)} accessed ping endpoint, saying ${args}`);
     return "pong";
   });
 }

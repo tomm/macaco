@@ -47,7 +47,9 @@ const frontend_config = {
   },
   performance: { hints: false },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['**/*', '!favicon.ico'],
+    }),
     new HtmlWebpackPlugin({
       title: PAGE_TITLE,
       filename: 'index.html'
@@ -57,9 +59,9 @@ const frontend_config = {
 
 const backend_config = {
   stats,
-  mode: 'development',
+  mode: isProduction ? 'production' : 'development',
   target: 'node',
-  entry: { server: [ "./src/backend/main.ts" ], cli: [ "./src/backend/macaco_cli.ts" ] },
+  entry: { server: [ "./src/backend/main.ts" ], cli: [ "./src/backend/macaco_cli.ts" ], tests: ["./src/test_suite.ts"] },
   output: { filename: "[name].js", path: __dirname + "/dist" },
   externals: [nodeExternals()],
   devtool: "source-map",
@@ -71,6 +73,10 @@ const backend_config = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+  },
+  optimization: {
+    // don't hardcode NODE_ENV environment variable
+    nodeEnv: false
   },
   performance: { hints: false },
   plugins: [

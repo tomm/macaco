@@ -1,5 +1,5 @@
 const migrate = require('tiny-postgres-migrator');
-const postgres = require('postgres');
+import { sql } from "./macaco_core";
 import crypto from "crypto";
 import { createUser } from "./commands/macaco_user";
 
@@ -16,14 +16,6 @@ if (args[0] == 'adduser' && args.length == 3) {
     process.exit(0);
   });
 } else if (args[0] == 'migrate') {
-  if (!process.env['DATABASE_URL']) {
-    console.log("Missing required environment variable: DATABASE_URL");
-    process.exit(0);
-  }
-
-  console.log(process.cwd());
-  const sql = postgres(process.env['DATABASE_URL']);
-
   migrate.cmd('npm run cli migrate', sql, [process.cwd() + '/migrations'], args.slice(1));
 } else if (args[0] == 'generate_server_secret') {
   console.log("Generating server secret... (use value in the SERVER_SECRET environment variable)");

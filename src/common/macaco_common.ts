@@ -35,7 +35,7 @@ export function defineRoute<IN, OUT>(path: string, inputs: Safe.Obj<IN>, outputs
         csfr_token: csfr_token,
         args: inputs.write(_in)
       });
-      return outputs.read(r.data);
+      return outputs.read(r.data.result);
     }
   }
 }
