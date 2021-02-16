@@ -1,3 +1,4 @@
+require("source-map-support").install();
 import { FastifyInstance } from 'fastify';
 import fastifyStatic from "fastify-static";
 import fastifySecureSession from "fastify-secure-session";
