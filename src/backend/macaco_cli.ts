@@ -1,7 +1,7 @@
 const migrate = require('tiny-postgres-migrator');
 import { sql } from "./macaco_core";
-import crypto from "crypto";
 import { createUser } from "./commands/macaco_user";
+import { generateServerSecret } from "./macaco_webserver";
 
 const args = process.argv.slice(2);
 
@@ -19,7 +19,7 @@ if (args[0] == 'adduser' && args.length == 3) {
   migrate.cmd('npm run cli migrate', sql, [process.cwd() + '/migrations'], args.slice(1));
 } else if (args[0] == 'generate_server_secret') {
   console.log("Generating server secret... (use value in the SERVER_SECRET environment variable)");
-  console.log("Secret: " + crypto.randomBytes(32).toString('hex'));
+  console.log("Secret: " + generateServerSecret());
 } else {
   console.log(`Usage:
   npm run cli adduser <username> <password>
