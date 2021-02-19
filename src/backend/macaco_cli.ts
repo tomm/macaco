@@ -22,7 +22,7 @@ if (args[0] == 'adduser' && args.length == 3) {
   console.log("Secret: " + generateServerSecret());
 } else {
   console.log(`Usage:
-  npm run cli adduser <username> <password>
+  npm run cli adduser <email> <password>
   npm run cli migrate                             # run to see migrator options
   npm run cli generate_server_secret
 `);

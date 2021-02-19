@@ -33,7 +33,7 @@ const frontend_config = {
   devtool: "source-map",
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
+      { test: /\.tsx?$/, loader: "ts-loader", options: { transpileOnly: isProduction } },
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       { test: /\.css$/i, use: ['style-loader', 'css-loader'], },
     ]
@@ -67,7 +67,7 @@ const backend_config = {
   devtool: "source-map",
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
+      { test: /\.tsx?$/, loader: "ts-loader", options: { transpileOnly: isProduction } },
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
     ]
   },
