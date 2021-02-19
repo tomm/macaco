@@ -48,7 +48,7 @@ const frontend_config = {
   performance: { hints: false },
   plugins: [
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ['**/*', '!favicon.ico'],
+      cleanOnceBeforeBuildPatterns: ['index.html', 'js'],
     }),
     new HtmlWebpackPlugin({
       title: PAGE_TITLE,
