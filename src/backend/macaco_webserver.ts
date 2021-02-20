@@ -19,11 +19,11 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
 
   fastify.register(fastifySecureSession, { key: secret });
 
-  /* Middleware to set a cookie with csfr token. This is echoed back by the client in request bodies for validation */
+  /* Middleware to set a cookie with csrf token. This is echoed back by the client in request bodies for validation */
   fastify.addHook('onRequest', async (req, reply) => {
-    // Set csfr token
-    if (req.cookies['macaco.csfr'] == undefined) {
-      reply.setCookie('macaco.csfr', uuidv4(), { path: '/', sameSite: "strict" } );
+    // Set csrf token
+    if (req.cookies['macaco.csrf'] == undefined) {
+      reply.setCookie('macaco.csrf', uuidv4(), { path: '/', sameSite: "strict" } );
     }
   });
 
