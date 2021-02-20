@@ -25,12 +25,18 @@ export type RouteHandler<IN, OUT> = (args: IN, user: User | undefined, req: Fast
 
 export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, OUT>, handler: RouteHandler<IN, OUT>) {
   fastify.post(route.path, async (req, reply) => {
+    // only accept application/json
+    if (!(req.headers['content-type'] == 'application/json' ||
+          req.headers['content-type']?.startsWith('application/json;'))) {
+      console.log(req.headers['content-type']);
+      return reply.status(415).send('Unsupported media type');
+    }
+
     const user = Safe.optional(UserSerializer).read(req.session.get('loggedInUser'));
     try {
-      const posted_csfr = (req.body as any)?.csfr_token;
-      if (!(posted_csfr && posted_csfr === req.cookies['macaco.csfr'])) {
-        //console.error(`Error: request to ${route.path} has invalid CSFR token`);
-        reply.status(403).send('CSFR token mismatch');
+      const posted_csrf = req.headers['x-csrf-token'];
+      if (!(posted_csrf && posted_csrf === req.cookies['macaco.csrf'])) {
+        reply.status(403).send('CSRF token mismatch');
         return;
       }
       const _in = route.inputType.read((req.body as any).args);

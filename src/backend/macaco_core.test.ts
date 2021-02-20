@@ -15,45 +15,48 @@ export async function callRoute<IN, OUT>(route: Route<IN,OUT>, args: IN): Promis
   const resp = await app.inject({
     method: "POST",
     url: route.path,
-    cookies: { 'macaco.csfr': 'test' },
+    cookies: { 'macaco.csrf': 'test' },
     payload: {
-      csfr_token: 'test',
       args: route.inputType.write(args)
-    }
+    },
+    headers: { 'x-csrf-token': 'test' }
   });
   return [route.outputType.read(JSON.parse(resp.body).result), resp];
 }
 
-test('Detects missing CSFR token', async function() {
-  const resp = await app.inject({ method: 'POST', url: '/ping' });
-  assert.equal(resp.statusCode, "403");
-  assert.equal(resp.body, 'CSFR token mismatch');
+test('Rejects non-json payload', async function() {
+  const resp = await app.inject({ method: 'POST', url: '/ping', payload: 'hi', headers: {'content-type': 'text/plain'} });
+  assert.equal(resp.statusCode, "415");
+  assert.equal(resp.statusMessage, 'Unsupported Media Type');
 })
 
-test('Accepts correct CSFR token', async function() {
+test('Validates CSRF token', async function() {
   const resp = await app.inject({ method: 'GET', url: '/' });
   assert.equal(resp.statusCode, "200");
 
-  // must set csfr token cookie
-  const csfr_token = (resp.cookies.find((c: any) => c['name'] == 'macaco.csfr') as any).value;
-  assert(csfr_token);
+  // must set csrf token cookie
+  const csrf_token = (resp.cookies.find((c: any) => c['name'] == 'macaco.csrf') as any).value;
+  assert(csrf_token);
 
-  assert.equal(
-    (await app.inject({
+  {
+    const r = await app.inject({
       method: 'POST',
       url: '/ping',
-      cookies: { 'macaco.csfr': 'nonsense' },
-      payload: { csfr_token, args: {} } })
-    ).statusCode,
-    "403"
-  );
+      cookies: { 'macaco.csrf': 'nonsense' },
+      payload: { args: {} },
+      headers: { 'x-csrf-token': csrf_token }
+    });
+    assert.equal(r.statusCode, "403");
+    assert.equal(r.body, "CSRF token mismatch");
+  }
 
   {
     const resp2 = await app.inject({
       method: 'POST',
       url: '/ping',
-      cookies: { 'macaco.csfr': csfr_token },
-      payload: { csfr_token, args: {} }
+      cookies: { 'macaco.csrf': csrf_token },
+      payload: { args: {} },
+      headers: { 'x-csrf-token': csrf_token }
     });
 
     assert.equal(resp2.statusCode, 200);
@@ -61,10 +64,6 @@ test('Accepts correct CSFR token', async function() {
   }
 });
 
-test('Can call validated routes', async function() {
-  const [result] = await callRoute(routes.ping, {});
-  assert.equal(result, "pong");
-});
 
 test('Can log in', async function() {
   const credentials = { email: 'test@example.com', password: 'testpassword' };

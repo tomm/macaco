@@ -30,11 +30,9 @@ export function defineRoute<IN, OUT>(path: string, inputs: Safe.Obj<IN>, outputs
     inputType: inputs,
     outputType: outputs,
     call: async (_in: IN): Promise<OUT> => {
-      const csfr_token = document.cookie.split(';').find(item => item.trim().startsWith('macaco.csfr='))?.slice(12);
-      const r = await axios.post(path, {
-        csfr_token: csfr_token,
-        args: inputs.write(_in)
-      });
+      const csrf_token = document.cookie.split(';').find(item => item.trim().startsWith('macaco.csrf='))?.trim().slice(12);
+      console.log(csrf_token);
+      const r = await axios.post(path, { args: inputs.write(_in) }, { headers: { 'x-csrf-token': csrf_token } });
       return outputs.read(r.data.result);
     }
   }
