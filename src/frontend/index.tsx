@@ -3,9 +3,10 @@ import ReactDOM from "react-dom";
 import * as routes from "../common/routes";
 import { User } from "../common/macaco_common";
 import { setPage, definePage, Router } from "./macaco_frontend";
+import * as Safe from "safe-portals";
 import "./style.css";
 
-const Login = definePage('login', (props: {}) => {
+const Login = definePage('login', Safe.nothing, (props: {}) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | undefined>(undefined);
@@ -35,8 +36,20 @@ const Login = definePage('login', (props: {}) => {
     <input type="submit" value="Log in"></input>
   </form>
 });
+
+const DemoPageWithArgs = definePage(
+  'demo-page-with-args',
+  Safe.obj({name: Safe.str}),
+  (props) => {
+    return <div>
+      Hello, { props.pageArgs.name }.
+      <br />
+      <a href="#" onClick={e => { e.preventDefault(); setPage(DemoPage) }}>Back</a>
+    </div>
+  }
+);
     
-const DemoPage = definePage('', (props: {}) => {
+const DemoPage = definePage('', Safe.nothing, (props: {}) => {
   const [count, setCount] = React.useState(0);
   const [user, setUser] = React.useState<User | undefined>(undefined);
 
@@ -66,6 +79,7 @@ const DemoPage = definePage('', (props: {}) => {
     }
     You have clicked {count} times.
     <button onClick={() => setCount(count + 1)}>Click me</button>
+    <a href="#" onClick={e => { e.preventDefault(); setPage(DemoPageWithArgs, {name: 'Bob'});}}>Demo page with arguments</a>
   </>
 });
 
