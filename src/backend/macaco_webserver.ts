@@ -53,8 +53,9 @@ export async function startCluster(fastifyFactory: () => FastifyInstance) {
 
   if (numProcesses == 1 || !cluster.isMaster) {
     startWebserver(fastifyFactory);
+    console.log(`${new Date().toISOString()} | Server pid ${process.pid} listening on :${port} (${process.memoryUsage().rss / 1024} KiB RSS)`);
   } else {
-    console.log(`${new Date().toISOString()} | Starting ${numProcesses} webserver processes listening on port ${port}`);
+    console.log(`${new Date().toISOString()} | Starting ${numProcesses} webserver processes`);
     for (let i = 0; i < numProcesses; i++) {
       cluster.fork();
     }

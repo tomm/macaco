@@ -2,18 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as routes from "../common/routes";
 import { User } from "../common/macaco_common";
+import { setPage, definePage, Router } from "./macaco_frontend";
 import "./style.css";
 
-function Root(props: { initialRoot: string }) {
-  switch (props.initialRoot) {
-    case 'login':
-      return <LoginPage />
-    default:
-      return <DemoPage />
-  }
-}
-
-function LoginPage(props: {}) {
+const Login = definePage('login', (props: {}) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | undefined>(undefined);
@@ -23,8 +15,7 @@ function LoginPage(props: {}) {
 
     routes.tryLogin.call({ email, password }).then(success => {
       if (success) {
-        // @ts-ignore
-        window.location = '/';
+        setPage(DemoPage);
       } else {
         setError("Login failed. Try again");
       }
@@ -43,9 +34,9 @@ function LoginPage(props: {}) {
     </div>
     <input type="submit" value="Log in"></input>
   </form>
-}
+});
     
-function DemoPage(props: {}) {
+const DemoPage = definePage('', (props: {}) => {
   const [count, setCount] = React.useState(0);
   const [user, setUser] = React.useState<User | undefined>(undefined);
 
@@ -55,24 +46,27 @@ function DemoPage(props: {}) {
     routes.getLoggedInUser.call({}).then(setUser);
   }, []);
 
-  function onClickLogout() {
+  function onClickLogout(e: React.MouseEvent) {
+    e.preventDefault();
     routes.logout.call({}).then(() => {
       window.location.reload();
     });
+  }
+
+  function onClickLogin(e: React.MouseEvent) {
+    e.preventDefault();
+    setPage(Login);
   }
 
   return <>
     <h1>Hello, world!</h1>
     { user
         ? <div>{ user.email } is logged in. Click <a href="#" onClick={onClickLogout}>here</a> to log out.</div>
-        : <div>Click <a href="/?q=#login">here</a> to log in</div>
+        : <div>Click <a href="#" onClick={onClickLogin}>here</a> to log in</div>
     }
     You have clicked {count} times.
     <button onClick={() => setCount(count + 1)}>Click me</button>
   </>
-}
+});
 
-ReactDOM.render(
-  <Root initialRoot={window.location.hash.slice(1)} />,
-  document.body
-);
+ReactDOM.render(<Router />, document.body);
