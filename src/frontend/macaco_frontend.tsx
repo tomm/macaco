@@ -11,16 +11,22 @@ export type Page<T> = {
   argumentSerializer: Safe.Type<T>;
 };
 
+
+export function pageUrl<T>(page: Page<T>, args: T): string;
+export function pageUrl(page: Page<void>, args?: void): string;
+// @ts-ignore
+export function pageUrl(page, args) {
+  if (args === null || args === undefined) {
+    return `#${page.path}`;
+  } else {
+    return `#${page.path}?${JSON.stringify(page.argumentSerializer.write(args))}`;
+  }
+}
+
 export function setPage<T>(page: Page<T>, args: T): void;
 export function setPage(page: Page<void>, args?: void): void;
 // @ts-ignore
-export function setPage(page, args) {
-  if (args === null || args === undefined) {
-    window.location.hash = page.path;
-  } else {
-    window.location.hash = `${page.path}?${JSON.stringify(page.argumentSerializer.write(args))}`;
-  }
-}
+export function setPage(page, args) { window.location.hash = pageUrl(page, args); }
 
 type PageComponent<T> = React.SFC<{ pageArgs: T }> | React.ComponentClass<{ pageArgs: T }>;
 

@@ -2,9 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as routes from "../common/routes";
 import { User } from "../common/macaco_common";
-import { setPage, definePage, Router } from "./macaco_frontend";
+import { pageUrl, setPage, definePage, Router } from "./macaco_frontend";
 import * as Safe from "safe-portals";
 import "./style.css";
+
+/**
+ * A simple react App example of using frontend page routing, and backend api calls.
+ */
 
 const Login = definePage('login', Safe.nothing, (props: {}) => {
   const [email, setEmail] = React.useState("");
@@ -40,46 +44,35 @@ const Login = definePage('login', Safe.nothing, (props: {}) => {
 const DemoPageWithArgs = definePage(
   'demo-page-with-args',
   Safe.obj({name: Safe.str}),
-  (props) => {
-    return <div>
-      Hello, { props.pageArgs.name }.
-      <br />
-      <a href="#" onClick={e => { e.preventDefault(); setPage(DemoPage) }}>Back</a>
-    </div>
-  }
+  (props) => <div>
+    Hello, { props.pageArgs.name }.
+    <br /><a href={pageUrl(DemoPage)}>Back</a>
+  </div>
 );
     
 const DemoPage = definePage('', Safe.nothing, (props: {}) => {
-  const [count, setCount] = React.useState(0);
   const [user, setUser] = React.useState<User | undefined>(undefined);
 
   React.useEffect(() => {
-    // XHR to /ping example endpoint
-    routes.ping.call({}).then(console.log);
+    // on start, load logged-in user via XHR
     routes.getLoggedInUser.call({}).then(setUser);
   }, []);
 
   function onClickLogout(e: React.MouseEvent) {
     e.preventDefault();
-    routes.logout.call({}).then(() => {
-      window.location.reload();
-    });
-  }
-
-  function onClickLogin(e: React.MouseEvent) {
-    e.preventDefault();
-    setPage(Login);
+    routes.logout.call({}).then(() => window.location.reload());
   }
 
   return <>
-    <h1>Hello, world!</h1>
+    <h1>Hello, macaco world!</h1>
     { user
         ? <div>{ user.email } is logged in. Click <a href="#" onClick={onClickLogout}>here</a> to log out.</div>
-        : <div>Click <a href="#" onClick={onClickLogin}>here</a> to log in</div>
+        : <div>Click <a href={pageUrl(Login)}>here</a> to log in</div>
     }
-    You have clicked {count} times.
-    <button onClick={() => setCount(count + 1)}>Click me</button>
-    <a href="#" onClick={e => { e.preventDefault(); setPage(DemoPageWithArgs, {name: 'Bob'});}}>Demo page with arguments</a>
+    <br />
+    <button onClick={e => setPage(DemoPageWithArgs, {name: 'Bob'})}>Demo page with arguments (using onClick setPage)</button>
+    <br />
+    <a href={pageUrl(DemoPageWithArgs, { name: 'Tom' })}>Demo page with arguments (using href)</a>
   </>
 });
 
