@@ -28,7 +28,6 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
     // only accept application/json
     if (!(req.headers['content-type'] == 'application/json' ||
           req.headers['content-type']?.startsWith('application/json;'))) {
-      console.log(req.headers['content-type']);
       return reply.status(415).send('Unsupported media type');
     }
 
