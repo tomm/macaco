@@ -2,7 +2,7 @@ import React from "react";
 import * as Safe from "safe-portals";
 
 /**
- * Simple frontend routing
+ * Tiny, type-safe, validated frontend routing.
  */
 
 export type Page<T> = {
