@@ -1,4 +1,4 @@
-const migrate = require('tiny-postgres-migrator');
+import * as migrate from 'tiny-postgres-migrator';
 import { sql } from "./macaco_core";
 import { createUser } from "./commands/macaco_user";
 import { generateServerSecret } from "./macaco_webserver";
