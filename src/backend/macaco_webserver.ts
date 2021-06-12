@@ -7,7 +7,6 @@ import cluster from "cluster";
 import crypto from "crypto";
 import { setupRoutes } from "./route_handlers";
 import { error } from "../common/macaco_common";
-import { v4 as uuidv4 } from "uuid";
   
 const port = process.env['PORT'] || 3000;
 
@@ -18,14 +17,6 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
   if (secret.length != 32) error('Invalid SERVER_SECRET');
 
   fastify.register(fastifySecureSession, { key: secret });
-
-  /* Middleware to set a cookie with csrf token. This is echoed back by the client in request bodies for validation */
-  fastify.addHook('onRequest', async (req, reply) => {
-    // Set csrf token
-    if (req.cookies['macaco.csrf'] == undefined) {
-      reply.setCookie('macaco.csrf', uuidv4(), { path: '/', sameSite: "strict" } );
-    }
-  });
 
   setupRoutes(fastify);
 

@@ -15,11 +15,10 @@ export async function callRoute<IN, OUT>(route: Route<IN,OUT>, args: IN): Promis
   const resp = await app.inject({
     method: "POST",
     url: route.path,
-    cookies: { 'macaco.csrf': 'test' },
     payload: {
       args: route.inputType.write(args)
     },
-    headers: { 'x-csrf-token': 'test' }
+    headers: { 'x-csrf': '1' }
   });
   return [route.outputType.read(JSON.parse(resp.body).result), resp];
 }
@@ -34,29 +33,22 @@ test('Validates CSRF token', async function() {
   const resp = await app.inject({ method: 'GET', url: '/' });
   assert.equal(resp.statusCode, "200");
 
-  // must set csrf token cookie
-  const csrf_token = (resp.cookies.find((c: any) => c['name'] == 'macaco.csrf') as any).value;
-  assert(csrf_token);
-
   {
     const r = await app.inject({
       method: 'POST',
       url: '/ping',
-      cookies: { 'macaco.csrf': 'nonsense' },
       payload: { args: {} },
-      headers: { 'x-csrf-token': csrf_token }
     });
     assert.equal(r.statusCode, "403");
-    assert.equal(r.body, "CSRF token mismatch");
+    assert.equal(r.body, "CSRF header missing");
   }
 
   {
     const resp2 = await app.inject({
       method: 'POST',
       url: '/ping',
-      cookies: { 'macaco.csrf': csrf_token },
       payload: { args: {} },
-      headers: { 'x-csrf-token': csrf_token }
+      headers: { 'x-csrf': "1" }
     });
 
     assert.equal(resp2.statusCode, 200);
