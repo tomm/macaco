@@ -55,4 +55,30 @@ test('Resolve user permissions', async () => {
   assert.deepEqual(new Set(["bar", "gob"]), await UserCmd.getUserPermissions(user.guid));
 });
 
+test('Figure out what permissions are missing', async () => {
+  assert.deepEqual(
+    UserCmd.getMissingPermissions({
+      needed: new Set(["one", "two", "three", "four"]),
+      has: new Set(["two", "three"])
+    }),
+    new Set(["one", "four"])
+  );
+
+  assert.deepEqual(
+    UserCmd.getMissingPermissions({
+      needed: new Set(["one", "two", "three", "four"]),
+      has: new Set(["superuser"])
+    }),
+    new Set([])
+  );
+
+  assert.deepEqual(
+    UserCmd.getMissingPermissions({
+      needed: new Set(["one", "two"]),
+      has: new Set(["one", "two", "three", "four"]),
+    }),
+    new Set([])
+  );
+});
+
 export default test;

@@ -31,7 +31,7 @@
     "nyc": "^15.1.0",
     "source-map-loader": "^2.0.1",
     "style-loader": "^2.0.0",
-    "tiny-postgres-migrator": "^1.0.1",
+    "tiny-postgres-migrator": "^1.0.5",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.5",
     "webpack": "^5.4.0",

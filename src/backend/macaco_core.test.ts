@@ -40,7 +40,7 @@ test('Validates CSRF token', async function() {
       payload: { args: {} },
     });
     assert.equal(r.statusCode, "403");
-    assert.equal(r.body, "CSRF header missing");
+    assert.equal(r.body, '{"error":"CSRF header missing"}');
   }
 
   {

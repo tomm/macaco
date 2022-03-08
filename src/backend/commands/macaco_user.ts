@@ -73,3 +73,14 @@ export async function getUserPermissions(user_guid: string): Promise<Set<string>
 
   return rows[0].user_found ? new Set((rows[0].perms || []).flat(1)) : undefined;
 }
+
+export function getMissingPermissions(args: { needed: Set<string>; has: Set<string> }): Set<string> {
+  if (args.has.has("superuser")) {
+    return new Set();
+  } else {
+    const missing = new Set(
+      [...Array.from(args.needed)].filter(x => !args.has.has(x))
+    );
+    return missing;
+  }
+}
