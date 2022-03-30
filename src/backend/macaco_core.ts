@@ -5,7 +5,7 @@ import * as UserCmd from "./commands/macaco_user";
 import { User, UserSerializer, Route } from "../common/macaco_common";
 
 /* Database access */
-const dbEnvVar = process.env['NODE_ENV'] == 'test' ? 'TEST_DATABASE_URL' : 'DATABASE_URL';
+export const dbEnvVar = process.env['NODE_ENV'] == 'test' ? 'TEST_DATABASE_URL' : 'DATABASE_URL';
 
 if (!process.env[dbEnvVar]) {
   console.error(`Error: Missing ${dbEnvVar} environment variable`);
