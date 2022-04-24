@@ -69,7 +69,7 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
         return reply.status(400).send({error: 'Invalid request'});
       } else {
         reply.status(500).send({error: 'Server error'});
-        console.log(e.stack);
+        console.log((e as any).stack);
         throw e;
       }
     }
