@@ -1,6 +1,7 @@
 import React from "react";
 import { Page } from "../common/macaco_common";
 import * as Safe from "safe-portals";
+import { pageUrl } from "../common/macaco_common";
 export { pageUrl } from "../common/macaco_common";
 
 /**
@@ -17,7 +18,9 @@ type PageHandler<T> = {
 export function setPage<T>(page: Page<T>, args: T): void;
 export function setPage(page: Page<void>, args?: void): void;
 // @ts-ignore
-export function setPage(page, args) { window.location.hash = pageUrl(page, args); }
+export function setPage(page, args) {
+  window.location.hash = pageUrl(page, args);
+}
 
 const page_handlers: Record<string, PageHandler<any>> = {};
 
