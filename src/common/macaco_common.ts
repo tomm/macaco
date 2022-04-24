@@ -15,7 +15,7 @@ export type User = Safe.TypeIn<typeof UserSerializer>;
 export function error(msg: any): never { throw new Error(msg); }
 export function bug(msg: any): never { throw new Error("Software bug:" + msg.toString()); }
 
-/* Routing */
+/* Server HTTP endpoint routing */
 
 export type Route<IN, OUT> = {
   path: string;
@@ -35,5 +35,26 @@ export function defineRoute<IN, OUT>(path: string, permissions: "public" | Permi
       const r = await axios.post(path, { args: inputs.write(_in) }, { headers: { 'x-csrf': '1' } });
       return outputs.read(r.data.result);
     }
+  }
+}
+
+/* Frontend page routing */
+export type Page<T> = {
+  path: string;
+  argumentSerializer: Safe.Type<T>;
+};
+
+export function definePage<T>(path: string, argumentSerializer: Safe.Type<T>): Page<T> {
+  return { path, argumentSerializer };
+}
+
+export function pageUrl<T>(page: Page<T>, args: T): string;
+export function pageUrl(page: Page<void>, args?: void): string;
+// @ts-ignore
+export function pageUrl(page, args) {
+  if (args === null || args === undefined) {
+    return `#${page.path}`;
+  } else {
+    return `#${page.path}?${JSON.stringify(page.argumentSerializer.write(args))}`;
   }
 }

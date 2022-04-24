@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as routes from "../common/routes";
 import { User } from "../common/macaco_common";
-import { pageUrl, setPage, definePage, Router } from "./macaco_frontend";
-import * as Safe from "safe-portals";
+import { pageUrl, setPage, handlePage, Router } from "./macaco_frontend";
+import * as pages from "../common/pages";
 import "./style.css";
 
 /**
  * A simple react App example of using frontend page routing, and backend api calls.
  */
 
-const Login = definePage('login', Safe.nothing, (props: {}) => {
+handlePage(pages.Login, (props: {}) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string | undefined>(undefined);
@@ -20,7 +20,7 @@ const Login = definePage('login', Safe.nothing, (props: {}) => {
 
     routes.tryLogin.call({ email, password }).then(success => {
       if (success) {
-        setPage(DemoPage);
+        setPage(pages.DemoPage);
       } else {
         setError("Login failed. Try again");
       }
@@ -41,16 +41,13 @@ const Login = definePage('login', Safe.nothing, (props: {}) => {
   </form>
 });
 
-const DemoPageWithArgs = definePage(
-  'demo-page-with-args',
-  Safe.obj({name: Safe.str}),
-  (props) => <div>
+handlePage(pages.DemoPageWithArgs, (props) => <div>
     Hello, { props.pageArgs.name }.
-    <br /><a href={pageUrl(DemoPage)}>Back</a>
+    <br /><a href={pageUrl(pages.DemoPage)}>Back</a>
   </div>
 );
-    
-const DemoPage = definePage('', Safe.nothing, (props: {}) => {
+
+handlePage(pages.DemoPage, (props: {}) => {
   const [user, setUser] = React.useState<User | undefined>(undefined);
 
   React.useEffect(() => {
@@ -67,12 +64,12 @@ const DemoPage = definePage('', Safe.nothing, (props: {}) => {
     <h1>Hello, macaco world!</h1>
     { user
         ? <div>{ user.email } is logged in. Click <a href="#" onClick={onClickLogout}>here</a> to log out.</div>
-        : <div>Click <a href={pageUrl(Login)}>here</a> to log in</div>
+        : <div>Click <a href={pageUrl(pages.Login)}>here</a> to log in</div>
     }
     <br />
-    <button onClick={e => setPage(DemoPageWithArgs, {name: 'Bob'})}>Demo page with arguments (using onClick setPage)</button>
+    <button onClick={e => setPage(pages.DemoPageWithArgs, {name: 'Bob'})}>Demo page with arguments (using onClick setPage)</button>
     <br />
-    <a href={pageUrl(DemoPageWithArgs, { name: 'Tom' })}>Demo page with arguments (using href)</a>
+    <a href={pageUrl(pages.DemoPageWithArgs, { name: 'Tom' })}>Demo page with arguments (using href)</a>
   </>
 });
 
