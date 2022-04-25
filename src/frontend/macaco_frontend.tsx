@@ -30,14 +30,9 @@ export function handlePage<T>(page: Page<T>, component: PageComponent<T>): void 
   }
 
   page_handlers[page.path] = { page, component };
-  console.log(`registering ${page.path}`);
 }
 
-function NotFound() {
-  return <div>Not found</div>
-}
-
-export function Router() {
+export function Router(props: { notfound: React.SFC | React.ComponentClass }) {
   const [rawPage, rawSetPage] = React.useState(window.location.hash.slice(1));
 
   window.addEventListener("hashchange", () => rawSetPage(window.location.hash.slice(1)), false);
@@ -46,15 +41,18 @@ export function Router() {
   const page_handler = page_handlers[path];
 
   if (page_handler === undefined) {
-    return <NotFound />
+    return <props.notfound />;
   } else {
-    const rawArgs = decodeURIComponent(rawPage.slice(path.length + 1));
     let pageArgs;
     try {
-      pageArgs = page_handler.page.argumentSerializer.read(rawArgs != '' ? JSON.parse(rawArgs) : null);
+      const rawArgs = JSON.parse(decodeURIComponent(rawPage.slice(path.length + 1)) || "null");
+      pageArgs = page_handler.page.argumentSerializer.read(rawArgs);
     } catch (e) {
       if (e instanceof Safe.ValidationError) {
-        return <NotFound />
+        return <props.notfound />;
+      } else if (e instanceof SyntaxError) {
+        // JSON parse error
+        return <props.notfound />;
       } else {
         throw e;
       }

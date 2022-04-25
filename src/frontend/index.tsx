@@ -73,4 +73,8 @@ handlePage(pages.DemoPage, (props: {}) => {
   </>
 });
 
-ReactDOM.render(<Router />, document.body);
+function NotFound() {
+  return <div>Not found</div>
+}
+
+ReactDOM.render(<Router notfound={NotFound} />, document.body);
