@@ -1,9 +1,15 @@
-const migrate = require('tiny-postgres-migrator');
-import { sql } from "./macaco_core";
+import * as migrate from 'tiny-postgres-migrator';
+import postgres from "postgres";
+import { dbEnvVar } from "./macaco_core";
 import { createUser } from "./commands/macaco_user";
 import { generateServerSecret } from "./macaco_webserver";
 
 const args = process.argv.slice(2);
+
+const sql = postgres(
+  process.env[dbEnvVar] as string,
+  { no_prepare: true } // prepared statements with migrations = bad
+);
 
 process.on("unhandledRejection", (error: any) => {
   console.log("Error: " + error?.stack);
