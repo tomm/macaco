@@ -4,6 +4,18 @@ import { FastifyInstance, FastifyRequest } from 'fastify';
 import * as UserCmd from "./commands/macaco_user";
 import { User, UserSerializer, Route } from "../common/macaco_common";
 
+/**
+ * Throwing ApiError from a route handler will result in 400 error.
+ */
+export class ApiError extends Error {
+  response: { error: string, [key: string]: any }
+  constructor(response: { error: string, [key: string]: any }) {
+    super();
+    this.response = response;
+    Object.setPrototypeOf(this, ApiError.prototype);
+  }
+}
+
 /* Database access */
 export const dbEnvVar = process.env['NODE_ENV'] == 'test' ? 'TEST_DATABASE_URL' : 'DATABASE_URL';
 
@@ -20,6 +32,16 @@ export const sql = postgres(
     //debug: (con, query, params) => console.log(query, params),
   }
 );
+
+function readUserFromSession(req: FastifyRequest): User | undefined {
+  try {
+    return Safe.optional(UserSerializer).read(req.session.get('loggedInUser'));
+  }
+  catch (e) {
+    console.log("Error reading user from cookie");
+    return undefined;
+  }
+}
 
 /* Type-safe, validated route handling */
 
@@ -40,7 +62,7 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
       return;
     }
 
-    const user = Safe.optional(UserSerializer).read(req.session.get('loggedInUser'));
+    const user = readUserFromSession(req);
     
     /* Check route permissions against the logged in user */
     if (route.permissions !== "public") {
@@ -62,11 +84,18 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
     }
 
     try {
-      const _in = route.inputType.read((req.body as any).args);
+      let _in;
+      try {
+        _in = route.inputType.read((req.body as any).args);
+      } catch (e) {
+        if (e instanceof Safe.ValidationError) {
+          return reply.status(400).send({error: 'Invalid request'});
+        } else { throw e; }
+      }
       return { result: route.outputType.write(await handler(_in, user, req)) };
     } catch (e) {
-      if (e instanceof Safe.ValidationError) {
-        return reply.status(400).send({error: 'Invalid request'});
+      if (e instanceof ApiError) {
+        return reply.status(400).send(e.response);
       } else {
         reply.status(500).send({error: 'Server error'});
         console.log((e as any).stack);
