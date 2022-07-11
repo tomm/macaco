@@ -5,14 +5,15 @@ import { UserSerializer, defineRoute } from "./macaco_common";
  * Define your routes here.
  */
 export const tryLogin = defineRoute(
-  '/api/login',
+  // XXX Must be on root (not /api) so cookie is set on domain root
+  '/login',
   "public",
   Safe.obj({ email: Safe.str, password: Safe.str }),
   Safe.bool
 );
 
 export const logout = defineRoute(
-  '/api/logout',
+  '/logout',
   [],
   Safe.obj({}),
   Safe.nothing
@@ -20,7 +21,7 @@ export const logout = defineRoute(
 
 export const getLoggedInUser = defineRoute(
   '/api/get_user',
-  [],
+  "public",
   Safe.obj({}),
   Safe.optional(UserSerializer)
 );
