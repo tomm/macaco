@@ -1,4 +1,6 @@
 dist
 public/index.html
-public/js
+public/*.js
+public/*.map
+public/*.css
 node_modules

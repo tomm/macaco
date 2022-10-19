@@ -8,7 +8,7 @@ export { pageUrl } from "../common/macaco_common";
  * Tiny, type-safe, validated frontend routing.
  */
 
-type PageComponent<T> = React.SFC<{ pageArgs: T }> | React.ComponentClass<{ pageArgs: T }>;
+type PageComponent<T> = React.FunctionComponent<{ pageArgs: T }> | React.ComponentClass<{ pageArgs: T }>;
 
 type PageHandler<T> = {
   page: Page<T>,
@@ -32,7 +32,7 @@ export function handlePage<T>(page: Page<T>, component: PageComponent<T>): void 
   page_handlers[page.path] = { page, component };
 }
 
-export function Router(props: { notfound: React.SFC | React.ComponentClass }) {
+export function Router(props: { notfound: React.FunctionComponent | React.ComponentClass }) {
   const [rawPage, rawSetPage] = React.useState(window.location.hash.slice(1));
 
   window.addEventListener("hashchange", () => rawSetPage(window.location.hash.slice(1)), false);
