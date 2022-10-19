@@ -1,6 +1,6 @@
 # Macaco
 
-Web app template using React, Fastify, Postgres, and a statically-validated client-server API.
+Web app template using Esbuild, React, Fastify, Postgres, and a statically-validated client-server API.
 
 ## How to use
 
@@ -16,13 +16,8 @@ npm i
 
 ## How to build and run (development)
 
-In one terminal run the builder:
-
-```
-webpack -w
-```
-
-In another terminal run the webserver:
+To start a daemon that builds, runs tests, and starts a webserver each time
+your code changes, run:
 
 ```
 npm run devserver
@@ -51,8 +46,8 @@ NODE_ENV=test npm run cli migrate
 ## How to build and run (production)
 
 ```
-webpack
-node dist/main.js
+npm run build
+node dist/server.js
 ```
 
 ## Environment variables

@@ -1,6 +1,6 @@
+import Fastify from 'fastify';
 import assert from "assert";
 import baretest from "baretest";
-import { appFactory } from "./main";
 import { setupApp } from "./macaco_webserver";
 import { Route } from "../common/macaco_common";
 import * as UserCmd from "./commands/macaco_user";
@@ -9,7 +9,7 @@ import { Response } from "light-my-request";
 import * as routes from "../common/routes";
 
 const test = baretest('Macaco Core');
-const app = setupApp(appFactory);
+const app = setupApp(() => Fastify({ logger: false }));
 
 export async function callRoute<IN, OUT>(route: Route<IN,OUT>, args: IN): Promise<[OUT, Response]> {
   const resp = await app.inject({

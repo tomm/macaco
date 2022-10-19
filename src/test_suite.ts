@@ -1,4 +1,4 @@
-require("source-map-support").install();
+//require("source-map-support").install();
 import user_test from "./backend/commands/macaco_user.test";
 import core_tests from "./backend/macaco_core.test";
 import { sql } from "./backend/macaco_core";
@@ -10,8 +10,9 @@ if (process.env['NODE_ENV'] != 'test') {
 }
 
 !(async function() {
+  const start = Date.now();
   console.log("Rebuilding test DB...");
-  await sql`drop schema public cascade`;
+  await sql`drop schema if exists public cascade`;
   await sql`create schema public`;
   await migrate.applyAllMigrations(sql, [process.cwd() + '/migrations']);
 
@@ -19,4 +20,5 @@ if (process.env['NODE_ENV'] != 'test') {
   await core_tests.run();
   await user_test.run();
   await sql.end();
+  console.log(`Test suite completed in ${Date.now() - start} ms`);
 })()
