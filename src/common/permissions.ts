@@ -1,1 +1,1 @@
-export type Permission = 'superuser' | 'view self';
+export type Permission = "superuser" | "view self";
