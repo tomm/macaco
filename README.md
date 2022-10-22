@@ -52,9 +52,9 @@ node dist/server.js
 
 ## Environment variables
 
- * DATABASE_POOL_SIZE - Number of pool connections to Postgres
- * DATABASE_URL - Postgres connection string
- * PORT - Port webserver will listen on
- * SERVER_SECRET - Used for encrypted cookies. Generate with `npm run cli generate_server_secret`
- * TEST_DATABASE_URL - Postgres connection string for running the tests
- * WEB_CONCURRENCY - Number of webserver processes to spawn
+- DATABASE_POOL_SIZE - Number of pool connections to Postgres
+- DATABASE_URL - Postgres connection string
+- PORT - Port webserver will listen on
+- SERVER_SECRET - Used for encrypted cookies. Generate with `npm run cli generate_server_secret`
+- TEST_DATABASE_URL - Postgres connection string for running the tests
+- WEB_CONCURRENCY - Number of webserver processes to spawn

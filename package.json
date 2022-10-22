@@ -39,7 +39,7 @@
     "devserver": "npx nodemon -e ts,tsx -w esbuild.js -w './src/**/*' -x \"rm -f public/*.js public/*.map public/*.css && node esbuild.js && NODE_ENV=test node dist/test_suite.js && NODE_ENV=development node dist/server.js\"",
     "test": "NODE_ENV=test node ./dist/test_suite.js",
     "coverage": "NODE_ENV=test npx nyc node ./dist/test_suite.js",
-    "typecheck": "tsc --noEmit --pretty --skipLibCheck"
+    "typecheck": "npx tsc --noEmit --pretty --skipLibCheck"
   },
   "author": "Tom Morton <tomm@riseup.net>",
   "license": "MIT"

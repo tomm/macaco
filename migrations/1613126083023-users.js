@@ -1,5 +1,5 @@
 exports.up = async function(sql) {
-  await sql`
+    await sql`
     create table users (
       guid uuid primary key not null,
       email text not null unique,
@@ -9,7 +9,7 @@ exports.up = async function(sql) {
 };
 
 exports.down = async function(sql) {
-  await sql`
+    await sql`
     drop table users;
   `;
 };
