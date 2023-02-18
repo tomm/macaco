@@ -1,14 +1,14 @@
 import sourceMapSupport from "source-map-support";
 sourceMapSupport.install();
+import { error } from "@common/macaco_common";
 import cluster from "cluster";
 import crypto from "crypto";
 import { FastifyInstance } from "fastify";
 import fastifySecureSession from "fastify-secure-session";
 import fastifyStatic from "fastify-static";
-import path from "path";
-import { error } from "@common/macaco_common";
-import { setupRoutes } from "./route_handlers";
 import * as os from "os";
+import path from "path";
+import { setupRoutes } from "./route_handlers";
 
 const port = process.env["PORT"] || 3000;
 

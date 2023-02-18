@@ -1,5 +1,5 @@
-import { FastifyInstance } from "fastify";
 import * as routes from "@common/routes";
+import { FastifyInstance } from "fastify";
 import * as UserCmd from "./commands/macaco_user";
 import { handleRoute } from "./macaco_core";
 
@@ -7,8 +7,8 @@ export function setupRoutes(fastify: FastifyInstance) {
     /**
      * Add your route handlers here
      */
-    fastify.get('/ping', (req, resp) => {
-        resp.send({ hello: 'world' });
+    fastify.get("/ping", (req, resp) => {
+        resp.send({ hello: "world" });
     });
 
     /**

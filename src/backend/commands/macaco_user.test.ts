@@ -1,5 +1,5 @@
-import baretest from "baretest";
 import assert from "assert";
+import baretest from "baretest";
 import * as uuid from "uuid";
 import { sql } from "../macaco_core";
 import * as UserCmd from "./macaco_user";

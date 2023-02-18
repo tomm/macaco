@@ -1,8 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import { User } from "@common/macaco_common";
 import * as pages from "@common/pages";
 import * as routes from "@common/routes";
+import React from "react";
+import ReactDOM from "react-dom";
 import { handlePage, pageUrl, Router, setPage } from "./macaco_frontend";
 import "./style.css";
 

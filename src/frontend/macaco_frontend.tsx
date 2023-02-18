@@ -1,7 +1,7 @@
-import React from "react";
-import * as Safe from "safe-portals";
 import { Page } from "@common/macaco_common";
 import { pageUrl } from "@common/macaco_common";
+import React from "react";
+import * as Safe from "safe-portals";
 export { pageUrl } from "@common/macaco_common";
 
 /**

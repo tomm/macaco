@@ -1,7 +1,7 @@
+import { Route, User, UserSerializer } from "@common/macaco_common";
 import { FastifyInstance, FastifyRequest } from "fastify";
 import postgres from "postgres";
 import * as Safe from "safe-portals";
-import { Route, User, UserSerializer } from "@common/macaco_common";
 import * as UserCmd from "./commands/macaco_user";
 
 /**
