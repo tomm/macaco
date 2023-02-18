@@ -1,12 +1,14 @@
-require("source-map-support").install();
+import sourceMapSupport from "source-map-support";
+sourceMapSupport.install();
 import cluster from "cluster";
 import crypto from "crypto";
 import { FastifyInstance } from "fastify";
 import fastifySecureSession from "fastify-secure-session";
 import fastifyStatic from "fastify-static";
 import path from "path";
-import { error } from "../common/macaco_common";
+import { error } from "@common/macaco_common";
 import { setupRoutes } from "./route_handlers";
+import * as os from "os";
 
 const port = process.env["PORT"] || 3000;
 
@@ -40,7 +42,7 @@ export async function startWebserver(fastifyFactory: () => FastifyInstance) {
 }
 
 export async function startCluster(fastifyFactory: () => FastifyInstance) {
-    const numProcesses = process.env["WEB_CONCURRENCY"] || require("os").cpus().length;
+    const numProcesses = process.env["WEB_CONCURRENCY"] || os.cpus().length;
 
     if (numProcesses == 1 || !cluster.isMaster) {
         startWebserver(fastifyFactory);

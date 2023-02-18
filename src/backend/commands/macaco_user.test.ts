@@ -1,8 +1,10 @@
-const test = require("baretest")("Macaco User");
+import baretest from "baretest";
 import assert from "assert";
 import * as uuid from "uuid";
 import { sql } from "../macaco_core";
 import * as UserCmd from "./macaco_user";
+
+const test = baretest("Macaco User");
 
 test("Create user and check passwords", async () => {
     await sql`delete from users`;

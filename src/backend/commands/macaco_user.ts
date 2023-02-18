@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import * as Safe from "safe-portals";
 import { v4 as uuidv4 } from "uuid";
-import { User, UserSerializer } from "../../common/macaco_common";
+import { User, UserSerializer } from "@common/macaco_common";
 import { sql } from "../macaco_core";
 
 const ROUNDS = 10;

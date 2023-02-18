@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 import postgres from "postgres";
 import * as Safe from "safe-portals";
-import { Route, User, UserSerializer } from "../common/macaco_common";
+import { Route, User, UserSerializer } from "@common/macaco_common";
 import * as UserCmd from "./commands/macaco_user";
 
 /**
@@ -28,7 +28,7 @@ export const sql = postgres(
     process.env[dbEnvVar] as string,
     {
         max: process.env["DATABASE_POOL_SIZE"] ? parseInt(process.env["DATABASE_POOL_SIZE"]) : 10,
-        onnotice: process.env["NODE_ENV"] == "test" ? () => {} : console.log,
+        onnotice: process.env["NODE_ENV"] == "test" ? () => ({}) : console.log,
         // debug: (con, query, params) => console.log(query, params),
     },
 );
