@@ -1,8 +1,19 @@
 // require("source-map-support").install();
+import { PostgresError } from "postgres";
 import * as migrate from "tiny-postgres-migrator";
 import user_test from "./backend/commands/macaco_user.test";
 import { sql } from "./backend/commands/sql";
 import core_tests from "./backend/macaco_core.test";
+
+process.on("unhandledRejection", (error: unknown) => {
+    console.log("----- Unhandled promise rejection in test -----");
+    console.log(error);
+    if (error instanceof PostgresError) {
+        console.debug(error.query);
+        console.debug(error.parameters);
+    }
+    console.log("-----------------------------------------------");
+});
 
 if (process.env["NODE_ENV"] != "test") {
     console.error("Error: You must set NODE_ENV=test when running the tests");
