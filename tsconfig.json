@@ -12,6 +12,9 @@
     "jsx": "react",
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es5"
+    "target": "es5",
+    "paths": {
+      "@common/*": ["./src/common/*"]
+    }
   }
 }

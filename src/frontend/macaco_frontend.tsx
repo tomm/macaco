@@ -1,8 +1,8 @@
+import { Page } from "@common/macaco_common";
+import { pageUrl } from "@common/macaco_common";
 import React from "react";
 import * as Safe from "safe-portals";
-import { Page } from "../common/macaco_common";
-import { pageUrl } from "../common/macaco_common";
-export { pageUrl } from "../common/macaco_common";
+export { pageUrl } from "@common/macaco_common";
 
 /**
  * Tiny, type-safe, validated frontend routing.
@@ -15,8 +15,8 @@ type PageHandler<T> = {
     component: PageComponent<T>;
 };
 
-export function setPage<T>(page: Page<T>, args: T): void;
 export function setPage(page: Page<void>, args?: void): void;
+export function setPage<T>(page: Page<T>, args: T): void;
 // @ts-ignore
 export function setPage(page, args) {
     window.location.hash = pageUrl(page, args);

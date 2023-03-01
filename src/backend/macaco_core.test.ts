@@ -1,11 +1,11 @@
+import { Route } from "@common/macaco_common";
+import * as routes from "@common/routes";
 import assert from "assert";
 import baretest from "baretest";
 import Fastify from "fastify";
 import { Response } from "light-my-request";
-import { Route } from "../common/macaco_common";
-import * as routes from "../common/routes";
 import * as UserCmd from "./commands/macaco_user";
-import { sql } from "./macaco_core";
+import { sql } from "./commands/sql";
 import { setupApp } from "./macaco_webserver";
 
 const test = baretest("Macaco Core");

@@ -1,5 +1,5 @@
+import * as routes from "@common/routes";
 import { FastifyInstance } from "fastify";
-import * as routes from "../common/routes";
 import * as UserCmd from "./commands/macaco_user";
 import { handleRoute } from "./macaco_core";
 
@@ -7,6 +7,9 @@ export function setupRoutes(fastify: FastifyInstance) {
     /**
      * Add your route handlers here
      */
+    fastify.get("/ping", (req, resp) => {
+        resp.send({ hello: "world" });
+    });
 
     /**
      * Login with locally-stored credentials. (comment out to disable)

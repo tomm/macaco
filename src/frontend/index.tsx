@@ -1,8 +1,8 @@
+import { User } from "@common/macaco_common";
+import * as pages from "@common/pages";
+import * as routes from "@common/routes";
 import React from "react";
 import ReactDOM from "react-dom";
-import { User } from "../common/macaco_common";
-import * as pages from "../common/pages";
-import * as routes from "../common/routes";
 import { handlePage, pageUrl, Router, setPage } from "./macaco_frontend";
 import "./style.css";
 
@@ -10,7 +10,7 @@ import "./style.css";
  * A simple react App example of using frontend page routing, and backend api calls.
  */
 
-handlePage(pages.Login, (props: {}) => {
+handlePage(pages.Login, () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState<string | undefined>(undefined);
@@ -56,7 +56,7 @@ handlePage(pages.DemoPageWithArgs, (props) => (
     </div>
 ));
 
-handlePage(pages.DemoPage, (props: {}) => {
+handlePage(pages.DemoPage, () => {
     const [user, setUser] = React.useState<User | undefined>(undefined);
 
     React.useEffect(() => {
