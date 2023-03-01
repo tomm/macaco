@@ -1,7 +1,7 @@
 // require("source-map-support").install();
 import * as migrate from "tiny-postgres-migrator";
 import user_test from "./backend/commands/macaco_user.test";
-import { sql } from "./backend/macaco_core";
+import { sql } from "./backend/commands/sql";
 import core_tests from "./backend/macaco_core.test";
 
 if (process.env["NODE_ENV"] != "test") {

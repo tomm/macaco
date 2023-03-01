@@ -1,7 +1,7 @@
 import postgres from "postgres";
 import * as migrate from "tiny-postgres-migrator";
 import { createUser } from "./commands/macaco_user";
-import { dbEnvVar } from "./macaco_core";
+import { dbEnvVar } from "./commands/sql";
 import { generateServerSecret } from "./macaco_webserver";
 
 const args = process.argv.slice(2);

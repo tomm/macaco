@@ -2,7 +2,7 @@ import { User, UserSerializer } from "@common/macaco_common";
 import bcrypt from "bcrypt";
 import * as Safe from "safe-portals";
 import { v4 as uuidv4 } from "uuid";
-import { sql } from "../macaco_core";
+import { sql } from "./sql";
 
 const ROUNDS = 10;
 
