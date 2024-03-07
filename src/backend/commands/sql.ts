@@ -1,5 +1,10 @@
 import postgres from "postgres";
 
+/* Useful short alias for postgres transaction connection */
+export type DbXa = postgres.TransactionSql<{}>;
+export type DbCon = postgres.Sql<{}>;
+export type SqlFragment = postgres.PendingQuery<postgres.Row[]>;
+
 /* Database access */
 export const dbEnvVar = process.env["NODE_ENV"] == "test" ? "TEST_DATABASE_URL" : "DATABASE_URL";
 
