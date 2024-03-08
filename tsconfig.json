@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "sourceMap": true,
+    "incremental": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "esModuleInterop": true,

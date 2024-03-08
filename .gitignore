@@ -4,3 +4,5 @@ public/*.js
 public/*.map
 public/*.css
 node_modules
+tsconfig.tsbuildinfo
+.nyc_output
