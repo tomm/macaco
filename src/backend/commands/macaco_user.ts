@@ -44,8 +44,8 @@ export async function upsertRole(args: { name: string; guid: string; permissions
 }
 
 export async function getRolePermissions(guid: string): Promise<string[] | undefined> {
-    return sql`select permissions from roles where guid=${guid}`.then(
-        (r) => r[0] ? Safe.array(Safe.str).read(r[0].permissions) : undefined,
+    return sql`select permissions from roles where guid=${guid}`.then((r) =>
+        r[0] ? Safe.array(Safe.str).read(r[0].permissions) : undefined,
     );
 }
 
@@ -78,9 +78,7 @@ export function getMissingPermissions(args: { needed: Set<string>; has: Set<stri
     if (args.has.has("superuser")) {
         return new Set();
     } else {
-        const missing = new Set(
-            [...Array.from(args.needed)].filter(x => !args.has.has(x)),
-        );
+        const missing = new Set([...Array.from(args.needed)].filter((x) => !args.has.has(x)));
         return missing;
     }
 }

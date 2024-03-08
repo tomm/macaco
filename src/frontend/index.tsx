@@ -18,7 +18,7 @@ handlePage(pages.Login, () => {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        routes.tryLogin.call({ email, password }).then(success => {
+        routes.tryLogin.call({ email, password }).then((success) => {
             if (success) {
                 setPage(pages.DemoPage);
             } else {
@@ -28,11 +28,11 @@ handlePage(pages.Login, () => {
     }
 
     return (
-        <form onSubmit={e => handleSubmit(e)}>
+        <form onSubmit={(e) => handleSubmit(e)}>
             {error && <div>{error}</div>}
             <div>
                 <label htmlFor="email">Email</label>
-                <input name="email" type="email" value={email} onChange={e => setEmail(e.currentTarget.value)} />
+                <input name="email" type="email" value={email} onChange={(e) => setEmail(e.currentTarget.value)} />
             </div>
             <div>
                 <label htmlFor="password">Password</label>
@@ -40,7 +40,7 @@ handlePage(pages.Login, () => {
                     name="password"
                     type="password"
                     value={password}
-                    onChange={e => setPassword(e.currentTarget.value)}
+                    onChange={(e) => setPassword(e.currentTarget.value)}
                 />
             </div>
             <input type="submit" value="Log in"></input>
@@ -72,19 +72,21 @@ handlePage(pages.DemoPage, () => {
     return (
         <>
             <h1>Hello, macaco world!</h1>
-            {user
-                ? (
-                    <div>
-                        {user.email} is logged in. Click <a href="#" onClick={onClickLogout}>here</a> to log out.
-                    </div>
-                )
-                : (
-                    <div>
-                        Click <a href={pageUrl(pages.Login)}>here</a> to log in
-                    </div>
-                )}
+            {user ? (
+                <div>
+                    {user.email} is logged in. Click{" "}
+                    <a href="#" onClick={onClickLogout}>
+                        here
+                    </a>{" "}
+                    to log out.
+                </div>
+            ) : (
+                <div>
+                    Click <a href={pageUrl(pages.Login)}>here</a> to log in
+                </div>
+            )}
             <br />
-            <button onClick={e => setPage(pages.DemoPageWithArgs, { name: "Bob" })}>
+            <button onClick={(e) => setPage(pages.DemoPageWithArgs, { name: "Bob" })}>
                 Demo page with arguments (using onClick setPage)
             </button>
             <br />

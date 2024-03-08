@@ -20,7 +20,7 @@ if (process.env["NODE_ENV"] != "test") {
     process.exit(-1);
 }
 
-!(async function() {
+!(async function () {
     const start = Date.now();
     console.log("Rebuilding test DB...");
     await sql`drop schema if exists public cascade`;

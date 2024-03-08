@@ -33,9 +33,7 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
 export async function startWebserver(fastifyFactory: () => FastifyInstance) {
     const fastify = await setupApp(fastifyFactory);
 
-    fastify.listen(
-        port,
-    ).catch(err => {
+    fastify.listen(port).catch((err) => {
         fastify.log.error(err);
         process.exit(1);
     });

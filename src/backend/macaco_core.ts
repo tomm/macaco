@@ -32,8 +32,10 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
     fastify.post(route.path, async (req, reply) => {
         // only accept application/json
         if (
-            !(req.headers["content-type"] == "application/json"
-                || req.headers["content-type"]?.startsWith("application/json;"))
+            !(
+                req.headers["content-type"] == "application/json" ||
+                req.headers["content-type"]?.startsWith("application/json;")
+            )
         ) {
             return reply.status(415).send({ error: "Unsupported media type" });
         }
@@ -49,7 +51,7 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
 
         /* Check route permissions against the logged in user */
         if (route.permissions !== "public") {
-            const user_permissions = user && await UserCmd.getUserPermissions(user.guid);
+            const user_permissions = user && (await UserCmd.getUserPermissions(user.guid));
             if (user_permissions === undefined) {
                 reply.status(403).send({ error: "Permission denied" });
                 return;

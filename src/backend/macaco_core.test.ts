@@ -23,7 +23,7 @@ export async function callRoute<IN, OUT>(route: Route<IN, OUT>, args: IN): Promi
     return [route.outputType.read(JSON.parse(resp.body).result), resp];
 }
 
-test("Rejects non-json payload", async function() {
+test("Rejects non-json payload", async function () {
     const resp = await app.inject({
         method: "POST",
         url: "/ping",
@@ -34,7 +34,7 @@ test("Rejects non-json payload", async function() {
     assert.equal(resp.statusMessage, "Unsupported Media Type");
 });
 
-test("Validates CSRF token", async function() {
+test("Validates CSRF token", async function () {
     const resp = await app.inject({ method: "GET", url: "/" });
     assert.equal(resp.statusCode, "200");
 
@@ -45,7 +45,7 @@ test("Validates CSRF token", async function() {
             payload: { args: {} },
         });
         assert.equal(r.statusCode, "403");
-        assert.equal(r.body, "{\"error\":\"CSRF header missing\"}");
+        assert.equal(r.body, '{"error":"CSRF header missing"}');
     }
 
     {
@@ -61,7 +61,7 @@ test("Validates CSRF token", async function() {
     }
 });
 
-test("Can log in", async function() {
+test("Can log in", async function () {
     const credentials = { email: "test@example.com", password: "testpassword" };
     await sql`delete from users`;
     await UserCmd.createUser(credentials);

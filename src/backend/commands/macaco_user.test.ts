@@ -11,15 +11,12 @@ test("Create user and check passwords", async () => {
 
     const user = await UserCmd.createUser({ email: "test@example.com", password: "testpassword" });
 
-    assert.deepEqual(
-        await UserCmd.checkUserLogin({ email: user.email, password: "testpassword" }),
-        { email: "test@example.com", guid: user.guid },
-    );
+    assert.deepEqual(await UserCmd.checkUserLogin({ email: user.email, password: "testpassword" }), {
+        email: "test@example.com",
+        guid: user.guid,
+    });
 
-    assert.strictEqual(
-        await UserCmd.checkUserLogin({ email: user.email, password: "wrong password" }),
-        undefined,
-    );
+    assert.strictEqual(await UserCmd.checkUserLogin({ email: user.email, password: "wrong password" }), undefined);
 });
 
 test("upsertRole(), getRolePermissions()", async () => {
