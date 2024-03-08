@@ -7,11 +7,14 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
       "complexity": {
         "useLiteralKeys": "off"
       },
       "style": {
-        "noUselessElse": "off"
+        "all": false
       }
     }
   },

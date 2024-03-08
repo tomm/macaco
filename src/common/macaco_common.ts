@@ -58,7 +58,7 @@ export function definePage<T>(path: string, argumentSerializer: Safe.Type<T>): P
 }
 
 export function pageUrl<T>(page: Page<T>, args: T): string;
-export function pageUrl(page: Page<void>, args?: void): string;
+export function pageUrl(page: Page<void>, args?: unknown): string;
 // @ts-ignore
 export function pageUrl(page, args) {
     if (args === null || args === undefined) {

@@ -33,7 +33,7 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
         // only accept application/json
         if (
             !(
-                req.headers["content-type"] == "application/json" ||
+                req.headers["content-type"] === "application/json" ||
                 req.headers["content-type"]?.startsWith("application/json;")
             )
         ) {
@@ -71,7 +71,7 @@ export function handleRoute<IN, OUT>(fastify: FastifyInstance, route: Route<IN, 
         }
 
         try {
-            let _in;
+            let _in: IN;
             try {
                 _in = route.inputType.read((req.body as any).args);
             } catch (e) {

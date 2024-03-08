@@ -16,14 +16,14 @@ process.on("unhandledRejection", (error: any) => {
     process.exit(-1);
 });
 
-if (args[0] == "adduser" && args.length == 3) {
+if (args[0] === "adduser" && args.length === 3) {
     createUser({ email: args[1], password: args[2] }).then((user) => {
         console.log(`User created: ${JSON.stringify(user)}`);
         process.exit(0);
     });
-} else if (args[0] == "migrate") {
+} else if (args[0] === "migrate") {
     migrate.cmd("npm run cli migrate", sql, [process.cwd() + "/migrations"], args.slice(1));
-} else if (args[0] == "generate_server_secret") {
+} else if (args[0] === "generate_server_secret") {
     console.log("Generating server secret... (use value in the SERVER_SECRET environment variable)");
     console.log("Secret: " + generateServerSecret());
 } else {

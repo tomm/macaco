@@ -15,12 +15,12 @@ process.on("unhandledRejection", (error: unknown) => {
     console.log("-----------------------------------------------");
 });
 
-if (process.env["NODE_ENV"] != "test") {
+if (process.env["NODE_ENV"] !== "test") {
     console.error("Error: You must set NODE_ENV=test when running the tests");
     process.exit(-1);
 }
 
-!(async function () {
+!(async () => {
     const start = Date.now();
     console.log("Rebuilding test DB...");
     await sql`drop schema if exists public cascade`;

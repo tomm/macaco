@@ -75,9 +75,9 @@ handlePage(pages.DemoPage, () => {
             {user ? (
                 <div>
                     {user.email} is logged in. Click{" "}
-                    <a href="#" onClick={onClickLogout}>
+                    <button type="button" onClick={onClickLogout}>
                         here
-                    </a>{" "}
+                    </button>
                     to log out.
                 </div>
             ) : (
@@ -86,7 +86,7 @@ handlePage(pages.DemoPage, () => {
                 </div>
             )}
             <br />
-            <button onClick={(e) => setPage(pages.DemoPageWithArgs, { name: "Bob" })}>
+            <button type="button" onClick={(_e) => setPage(pages.DemoPageWithArgs, { name: "Bob" })}>
                 Demo page with arguments (using onClick setPage)
             </button>
             <br />

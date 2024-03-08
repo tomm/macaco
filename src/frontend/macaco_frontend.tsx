@@ -15,7 +15,7 @@ type PageHandler<T> = {
     component: PageComponent<T>;
 };
 
-export function setPage(page: Page<void>, args?: void): void;
+export function setPage(page: Page<void>, args?: unknown): void;
 export function setPage<T>(page: Page<T>, args: T): void;
 // @ts-ignore
 export function setPage(page, args) {
@@ -43,7 +43,7 @@ export function Router(props: { notfound: React.FunctionComponent | React.Compon
     if (page_handler === undefined) {
         return <props.notfound />;
     } else {
-        let pageArgs;
+        let pageArgs: unknown;
         try {
             const rawArgs = JSON.parse(decodeURIComponent(rawPage.slice(path.length + 1)) || "null");
             pageArgs = page_handler.page.argumentSerializer.read(rawArgs);
