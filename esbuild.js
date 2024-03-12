@@ -6,7 +6,7 @@ const platform_node_config = {
     platform: "node",
     target: "node12",
     sourcemap: true,
-    external: ["postgres", "uuid", "./node_modules/*"],
+    external: ["axios", "postgres", "uuid", "./node_modules/*"],
 };
 
 fs.writeFileSync(

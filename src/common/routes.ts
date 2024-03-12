@@ -12,23 +12,8 @@ export const tryLogin = defineRoute(
     Safe.bool,
 );
 
-export const logout = defineRoute(
-    "/logout",
-    [],
-    Safe.obj({}),
-    Safe.nothing,
-);
+export const logout = defineRoute("/logout", [], Safe.obj({}), Safe.nothing);
 
-export const getLoggedInUser = defineRoute(
-    "/api/get_user",
-    "public",
-    Safe.obj({}),
-    Safe.optional(UserSerializer),
-);
+export const getLoggedInUser = defineRoute("/api/get_user", "public", Safe.obj({}), Safe.optional(UserSerializer));
 
-export const ping = defineRoute(
-    "/ping",
-    "public",
-    Safe.obj({}),
-    Safe.str,
-);
+export const ping = defineRoute("/ping", "public", Safe.obj({}), Safe.str);
