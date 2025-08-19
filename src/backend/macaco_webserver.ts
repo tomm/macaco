@@ -25,6 +25,7 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
     fastify.register(fastifyStatic, {
         root: path.join(process.cwd(), "public"),
         prefix: "/",
+        preCompressed: true,
     });
 
     return fastify;

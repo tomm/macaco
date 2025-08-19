@@ -1,4 +1,3 @@
-import axios from "axios";
 import * as Safe from "safe-portals";
 import { Permission } from "./permissions";
 
@@ -29,6 +28,44 @@ export type Route<IN, OUT> = {
     call: (_in: IN) => Promise<OUT>;
 };
 
+/** A simple XMLHttpRequest wrapper for JSON-only POSTs */
+async function httpJsonPost(url: string, payload: any, headers: Record<string, string>): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        // listen for `load` event
+        xhr.onload = () => {
+            // print JSON response
+            if (xhr.status < 200 || xhr.status >= 300) {
+                reject(["HttpError", xhr.status, xhr.getResponseHeader("Content-Type"), xhr.responseText]);
+            } else if (xhr.getResponseHeader("Content-Type")?.toLowerCase() !== "application/json; charset=utf-8") {
+                reject(["UnexpectedContentType", xhr.status, xhr.getResponseHeader("Content-Type"), xhr.responseText]);
+            } else {
+                // parse JSON
+                try {
+                    resolve(JSON.parse(xhr.responseText));
+                } catch (e) {
+                    if (e instanceof SyntaxError) {
+                        reject(["InvalidJSON", xhr.status, xhr.getResponseHeader("Content-Type"), xhr.responseText]);
+                    }
+                    throw e;
+                }
+            }
+        };
+
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+
+        for (const key of Object.getOwnPropertyNames(headers)) {
+            xhr.setRequestHeader(key, headers[key]);
+        }
+
+        // send rquest with JSON payload
+        xhr.send(JSON.stringify(payload));
+    });
+}
+
 export function defineRoute<IN, OUT>(
     path: string,
     permissions: "public" | Permission[],
@@ -41,8 +78,8 @@ export function defineRoute<IN, OUT>(
         inputType: inputs,
         outputType: outputs,
         call: async (_in: IN): Promise<OUT> => {
-            const r = await axios.post(path, { args: inputs.write(_in) }, { headers: { "x-csrf": "1" } });
-            return outputs.read(r.data.result);
+            const r = await httpJsonPost(path, { args: inputs.write(_in) }, { "x-csrf": "1" });
+            return outputs.read(r.result);
         },
     };
 }

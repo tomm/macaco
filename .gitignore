@@ -1,6 +1,12 @@
 dist
 public/index.html
 public/*.js
+public/*.js.br
+public/*.js.gz
+public/*.map.br
+public/*.map.gz
+public/*.css.br
+public/*.css.gz
 public/*.map
 public/*.css
 node_modules
