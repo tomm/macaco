@@ -1,9 +1,9 @@
 // require("source-map-support").install();
 import { PostgresError } from "postgres";
 import * as migrate from "tiny-postgres-migrator";
-import user_test from "./backend/commands/macaco_user.test";
-import { sql } from "./backend/commands/sql";
-import core_tests from "./backend/macaco_core.test";
+import { sql } from "./backend/commands/sql.ts";
+import user_test from "./backend/commands/macaco_user.test.ts";
+import core_tests from "./backend/macaco_core.test.ts";
 
 process.on("unhandledRejection", (error: unknown) => {
     console.log("----- Unhandled promise rejection in test -----");

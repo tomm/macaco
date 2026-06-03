@@ -1,8 +1,9 @@
-import { User, UserSerializer } from "@common/macaco_common";
+import type { User } from "../../common/macaco_common.ts";
+import { UserSerializer } from "../../common/macaco_common.ts";
 import bcrypt from "bcrypt";
 import * as Safe from "safe-portals";
 import { v4 as uuidv4 } from "uuid";
-import { sql } from "./sql";
+import { sql } from "./sql.ts";
 
 const ROUNDS = 10;
 

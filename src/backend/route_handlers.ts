@@ -1,7 +1,7 @@
-import * as routes from "@common/routes";
-import { FastifyInstance } from "fastify";
-import * as UserCmd from "./commands/macaco_user";
-import { handleRoute } from "./macaco_core";
+import * as routes from "../common/routes.ts";
+import type { FastifyInstance } from "fastify";
+import * as UserCmd from "./commands/macaco_user.ts";
+import { handleRoute } from "./macaco_core.ts";
 
 export function setupRoutes(fastify: FastifyInstance) {
     /**

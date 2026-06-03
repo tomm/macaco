@@ -1,5 +1,5 @@
 import * as Safe from "safe-portals";
-import { defineRoute, UserSerializer } from "./macaco_common";
+import { defineRoute, UserSerializer } from "./macaco_common.ts";
 
 /**
  * Define your routes here.

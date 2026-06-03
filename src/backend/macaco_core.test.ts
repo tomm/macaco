@@ -1,12 +1,12 @@
-import { Route } from "@common/macaco_common";
-import * as routes from "@common/routes";
+import type { Route } from "../common/macaco_common.ts";
+import * as routes from "../common/routes.ts";
 import assert from "assert";
 import baretest from "baretest";
 import Fastify from "fastify";
-import { Response } from "light-my-request";
-import * as UserCmd from "./commands/macaco_user";
-import { sql } from "./commands/sql";
-import { setupApp } from "./macaco_webserver";
+import type { Response } from "light-my-request";
+import * as UserCmd from "./commands/macaco_user.ts";
+import { sql } from "./commands/sql.ts";
+import { setupApp } from "./macaco_webserver.ts";
 
 const test = baretest("Macaco Core");
 const app = setupApp(() => Fastify({ logger: false }));

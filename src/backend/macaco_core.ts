@@ -1,7 +1,8 @@
-import { Route, User, UserSerializer } from "@common/macaco_common";
-import { FastifyInstance, FastifyRequest } from "fastify";
+import type { Route, User } from "../common/macaco_common.ts";
+import { UserSerializer } from "../common/macaco_common.ts";
+import type { FastifyInstance, FastifyRequest } from "fastify";
 import * as Safe from "safe-portals";
-import * as UserCmd from "./commands/macaco_user";
+import * as UserCmd from "./commands/macaco_user.ts";
 
 /**
  * Throwing ApiError from a route handler will result in 400 error.
