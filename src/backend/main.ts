@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import { PostgresError } from "postgres";
-import { startCluster } from "./macaco_webserver";
+import { startCluster } from "./macaco_webserver.ts";
 
 process.on("unhandledRejection", (error: unknown) => {
     console.log("----- Unhandled promise rejection in test -----");
@@ -15,6 +15,6 @@ process.on("unhandledRejection", (error: unknown) => {
 const appFactory = () => Fastify({ logger: false });
 
 /* this test doesn't work with esbuild tho... */
-if (require.main === module) {
-    startCluster(appFactory);
-}
+//if (require.main === module) {
+startCluster(appFactory);
+//}

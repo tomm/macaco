@@ -20,7 +20,7 @@ To start a daemon that builds, runs tests, and starts a webserver each time
 your code changes, run:
 
 ```
-npm run devserver
+npm run dev
 ```
 
 ## How to run migrations (and use the Macaco CLI)

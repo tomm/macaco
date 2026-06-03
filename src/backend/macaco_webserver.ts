@@ -25,6 +25,7 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
     fastify.register(fastifyStatic, {
         root: path.join(process.cwd(), "public"),
         prefix: "/",
+        preCompressed: true,
     });
 
     return fastify;
@@ -33,7 +34,7 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
 export async function startWebserver(fastifyFactory: () => FastifyInstance) {
     const fastify = setupApp(fastifyFactory);
 
-    fastify.listen({ port }).catch((err) => {
+    fastify.listen({ host: '0.0.0.0', port }).catch((err) => {
         fastify.log.error(err);
         process.exit(1);
     });

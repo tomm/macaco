@@ -1,8 +1,8 @@
 import assert from "assert";
 import baretest from "baretest";
 import * as uuid from "uuid";
-import * as UserCmd from "./macaco_user";
-import { sql } from "./sql";
+import * as UserCmd from "./macaco_user.ts";
+import { sql } from "./sql.ts";
 
 const test = baretest("Macaco User");
 

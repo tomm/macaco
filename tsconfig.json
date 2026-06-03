@@ -9,11 +9,11 @@
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
+    "allowImportingTsExtensions": true,
     "strict": true,
     "jsx": "react",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es5",
+    "target": "es6",
     "paths": {
       "@common/*": ["./src/common/*"]
     }
