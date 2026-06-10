@@ -11,6 +11,7 @@ import path from "path";
 import { setupRoutes } from "./route_handlers";
 
 const port = process.env["PORT"] ? parseInt(process.env["PORT"]) : 3000;
+const host = process.env["HOST"] || error("HOST env var required");
 
 export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance {
     const fastify = fastifyFactory();
@@ -34,7 +35,7 @@ export function setupApp(fastifyFactory: () => FastifyInstance): FastifyInstance
 export async function startWebserver(fastifyFactory: () => FastifyInstance) {
     const fastify = setupApp(fastifyFactory);
 
-    fastify.listen({ host: '0.0.0.0', port }).catch((err) => {
+    fastify.listen({ host, port }).catch((err) => {
         fastify.log.error(err);
         process.exit(1);
     });
