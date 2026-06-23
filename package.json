@@ -2,17 +2,18 @@
   "name": "macaco",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
+  "type": "module",
   "scripts": {
     "cli": "npx tsx ./src/backend/macaco_cli.ts",
     "build": "node esbuild.js",
     "start": "npx tsx ./src/backend/main.ts",
-    "dev": "npx nodemon -e ts,tsx -w esbuild.js -w './src/**/*' -x \"rm -f public/*.js public/*.map public/*.css && node esbuild.js && npm run typecheck && npm run test && NODE_ENV=development npx tsx src/backend/main.ts\"",
+    "dev": "npx nodemon -e ts,tsx -w esbuild.js -w './src/**/*' -x \"rm -f public/*.js public/*.map public/*.css && node esbuild.js && NODE_ENV=development npx tsx src/backend/main.ts\"",
     "lint": "npx biome check --apply src/",
     "format": "npx @biomejs/biome format --write ./src *.ts",
-    "test": "NODE_ENV=test npx tsx ./src/test_suite.ts",
-    "coverage": "NODE_ENV=test npx nyc npx tsx ./src/test_suite.ts",
-    "typecheck": "npx tsgo --noEmit --pretty --skipLibCheck || true"
+    "test": "NODE_ENV=test npx tsx --test --import ./src/per_test_setup.ts --test-global-setup ./src/global_test_setup.ts --test-concurrency 1",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run test -- --experimental-test-coverage",
+    "check": "npx biome check src/ && npx tsgo --noEmit --pretty --skipLibCheck"
   },
   "dependencies": {
     "@fastify/secure-session": "7.1.0",
@@ -25,26 +26,24 @@
     "react": "npm:@preact/compat@17.1.1",
     "react-dom": "npm:@preact/compat@17.1.1",
     "safe-portals": "3.1.1",
-    "source-map-support": "0.5.21",
     "tsx": "^4.22.4",
+    "tiny-postgres-migrator": "2.0.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
     "@luncheon/esbuild-plugin-gzip": "^0.1.0",
-    "@types/baretest": "2.0.0",
     "@types/bcrypt": "3.0.1",
-    "@types/node": "14.18.14",
+    "@types/node": "^25.9.3",
     "@types/react": "17.0.44",
     "@types/react-dom": "17.0.15",
-    "@types/source-map-support": "0.5.6",
     "@types/uuid": "8.3.4",
     "@typescript/native-preview": "^7.0.0-dev.20260527.2",
-    "baretest": "npm:@prantlf/baretest@^2.0.1",
     "esbuild": "0.20.1",
-    "nodemon": "3.1.0",
-    "nyc": "15.1.0",
-    "tiny-postgres-migrator": "2.0.0"
+    "nodemon": "3.1.0"
+  },
+  "engines": {
+    "node": ">=26.0.0"
   },
   "author": "Tom Morton <tomm@riseup.net>",
   "license": "MIT"

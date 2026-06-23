@@ -1,12 +1,10 @@
 import assert from "assert";
-import baretest from "baretest";
+import test from "node:test";
 import * as uuid from "uuid";
 import * as UserCmd from "./macaco_user.ts";
 import { sql } from "./sql.ts";
 
-const test = baretest("Macaco User");
-
-test("Create user and check passwords", async () => {
+test("Macaco user: Create user and check passwords", async () => {
     await sql`delete from users`;
 
     const user = await UserCmd.createUser({ email: "test@example.com", password: "testpassword" });
@@ -19,7 +17,7 @@ test("Create user and check passwords", async () => {
     assert.strictEqual(await UserCmd.checkUserLogin({ email: user.email, password: "wrong password" }), undefined);
 });
 
-test("upsertRole(), getRolePermissions()", async () => {
+test("Macaco user: upsertRole(), getRolePermissions()", async () => {
     await sql`delete from roles`;
     const guid = uuid.v4();
     assert.deepEqual(undefined, await UserCmd.getRolePermissions(guid));
@@ -29,7 +27,7 @@ test("upsertRole(), getRolePermissions()", async () => {
     assert.deepEqual(["foo", "baz"], await UserCmd.getRolePermissions(guid));
 });
 
-test("Resolve user permissions", async () => {
+test("Macaco user: Resolve user permissions", async () => {
     await sql`delete from users`;
     await sql`delete from roles`;
 
@@ -54,7 +52,7 @@ test("Resolve user permissions", async () => {
     assert.deepEqual(new Set(["bar", "gob"]), await UserCmd.getUserPermissions(user.guid));
 });
 
-test("Figure out what permissions are missing", async () => {
+test("Macaco user: Figure out what permissions are missing", async () => {
     assert.deepEqual(
         UserCmd.getMissingPermissions({
             needed: new Set(["one", "two", "three", "four"]),
@@ -79,5 +77,3 @@ test("Figure out what permissions are missing", async () => {
         new Set([]),
     );
 });
-
-export default test;

@@ -1,14 +1,13 @@
 import type { Route } from "../common/macaco_common.ts";
 import * as routes from "../common/routes.ts";
 import assert from "assert";
-import baretest from "baretest";
+import test from "node:test";
 import Fastify from "fastify";
 import type { Response } from "light-my-request";
 import * as UserCmd from "./commands/macaco_user.ts";
 import { sql } from "./commands/sql.ts";
 import { setupApp } from "./macaco_webserver.ts";
 
-const test = baretest("Macaco Core");
 const app = setupApp(() => Fastify({ logger: false }));
 
 export async function callRoute<IN, OUT>(route: Route<IN, OUT>, args: IN): Promise<[OUT, Response]> {
@@ -23,7 +22,7 @@ export async function callRoute<IN, OUT>(route: Route<IN, OUT>, args: IN): Promi
     return [route.outputType.read(JSON.parse(resp.body).result), resp];
 }
 
-test("Rejects non-json payload", async () => {
+test("Macaco core: Rejects non-json payload", async () => {
     const resp = await app.inject({
         method: "POST",
         url: "/ping",
@@ -34,7 +33,7 @@ test("Rejects non-json payload", async () => {
     assert.equal(resp.statusMessage, "Unsupported Media Type");
 });
 
-test("Validates CSRF token", async () => {
+test("Macaco core: Validates CSRF token", async () => {
     const resp = await app.inject({ method: "GET", url: "/" });
     assert.equal(resp.statusCode, "200");
 
@@ -61,7 +60,7 @@ test("Validates CSRF token", async () => {
     }
 });
 
-test("Can log in", async () => {
+test("Macaco core: Can log in", async () => {
     const credentials = { email: "test@example.com", password: "testpassword" };
     await sql`delete from users`;
     await UserCmd.createUser(credentials);
@@ -76,5 +75,3 @@ test("Can log in", async () => {
         assert.equal(result, false);
     }
 });
-
-export default test;

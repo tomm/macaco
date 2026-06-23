@@ -1,11 +1,11 @@
 import Fastify from "fastify";
-import { PostgresError } from "postgres";
+import postgres from "postgres";
 import { startCluster } from "./macaco_webserver.ts";
 
 process.on("unhandledRejection", (error: unknown) => {
     console.log("----- Unhandled promise rejection in test -----");
     console.log(error);
-    if (error instanceof PostgresError) {
+    if (error instanceof postgres.PostgresError) {
         console.debug(error.query);
         console.debug(error.parameters);
     }

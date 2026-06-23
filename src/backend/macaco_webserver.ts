@@ -1,5 +1,3 @@
-import sourceMapSupport from "source-map-support";
-sourceMapSupport.install();
 import { error } from "@common/macaco_common";
 import cluster from "cluster";
 import crypto from "crypto";
@@ -47,7 +45,7 @@ export async function startCluster(fastifyFactory: () => FastifyInstance) {
     if (numProcesses === 1 || !cluster.isMaster) {
         startWebserver(fastifyFactory);
         console.log(
-            `${new Date().toISOString()} | Server pid ${process.pid} listening on :${port} (${
+            `${new Date().toISOString()} | Server pid ${process.pid} listening on ${host}:${port} (${
                 process.memoryUsage().rss / 1024
             } KiB RSS)`,
         );

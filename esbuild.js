@@ -1,6 +1,7 @@
-const fs = require("fs");
-const esbuild = require("esbuild");
-const gzipPlugin = require('@luncheon/esbuild-plugin-gzip');
+import fs from "fs";
+import esbuild from "esbuild";
+import gzipPlugin from '@luncheon/esbuild-plugin-gzip';
+
 const timestamp = Date.now();
 
 fs.writeFileSync(
